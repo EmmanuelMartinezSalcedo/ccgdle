@@ -1,0 +1,180 @@
+<div class="w-full overflow-x-auto md:overflow-visible pb-4 custom-scrollbar mt-6 px-2 md:px-0">
+  <div class="min-w-200 max-w-4xl mx-auto">
+    <div
+      class="grid grid-cols-8 gap-2 mb-3 md:mb-4 text-[10px] md:text-xs lg:text-sm font-bold uppercase tracking-wider text-neutral-400 text-center"
+    >
+      <div>Card</div>
+      <div>Class</div>
+      <div>Mana</div>
+      <div>Rarity</div>
+      <div>Type</div>
+      <div>Minion Type / Spell School</div>
+      <div>Keywords</div>
+      <div>Set</div>
+    </div>
+    <div class="space-y-3 text-center">
+      @for (attempt of attempts(); track $index) {
+        <div
+          class="grid grid-cols-8 gap-2 md:gap-3 items-start animate-in fade-in slide-in-from-top-4 duration-500 text-sm"
+        >
+          <button
+            type="button"
+            class="btn btn-soft border-none hover:text-neutral-200 outline-none h-full cursor-pointer"
+            [class]="
+              attempt.card.id === gameCard().id
+                ? 'btn-success bg-success/20 hover:bg-success/40 text-success/40'
+                : 'btn-error bg-error/20 hover:bg-error/40 text-error/40'
+            "
+            (click)="openModal(attempt.card.image)"
+          >
+            {{ attempt.card.name }}
+          </button>
+          <div
+            class="border rounded-lg flex flex-col items-center justify-center p-3 font-bold h-full"
+            [class]="
+              getClassState(attempt.card.classes, gameCard().classes) === 'success'
+                ? 'bg-success/20 border-success/40'
+                : getClassState(attempt.card.classes, gameCard().classes) === 'warning'
+                  ? 'bg-warning/20 border-warning/40'
+                  : 'bg-error/20 border-error/40'
+            "
+          >
+            @for (class of attempt.card.classes; track $index) {
+              <span class="relative z-10"> {{ class.name }} </span>
+            }
+            @if (attempt.card.classes.length === 0) {
+              <span class="relative z-10"> None </span>
+            }
+          </div>
+          <div
+            class="relative border rounded-lg flex flex-col items-center justify-center p-3 font-bold overflow-hidden h-full"
+            [class]="
+              attempt.card.manaCost === gameCard().manaCost
+                ? 'bg-success/20 border-success/40'
+                : 'bg-error/20 border-error/40'
+            "
+          >
+            <span class="relative z-10">{{ attempt.card.manaCost }}</span>
+
+            @if (attempt.card.manaCost !== gameCard().manaCost) {
+              <span
+                class="material-symbols-rounded absolute -bottom-1 -right-1 transform rotate-12 text-error/20"
+                style="font-size: 3.25rem"
+              >
+                @if (gameCard().manaCost < attempt.card.manaCost) {
+                  arrow_downward
+                } @else {
+                  arrow_upward
+                }
+              </span>
+            }
+          </div>
+          <div
+            class="relative border rounded-lg flex flex-col items-center justify-center p-3 font-bold h-full"
+            [class]="
+              attempt.card.rarity.id === gameCard().rarity.id
+                ? 'bg-success/20 border-success/40'
+                : 'bg-error/20 border-error/40'
+            "
+          >
+            <span class="relative z-10"> {{ attempt.card.rarity.name }} </span>
+
+            @if (getRarityArrow(attempt.card.rarity, gameCard().rarity)) {
+              <span
+                class="material-symbols-rounded absolute -bottom-1 -right-1 transform rotate-12 text-error/20"
+                style="font-size: 3.25rem"
+              >
+                {{ getRarityArrow(attempt.card.rarity, gameCard().rarity) }}
+              </span>
+            }
+          </div>
+          <div
+            class="border rounded-lg flex flex-col items-center justify-center p-3 font-bold h-full"
+            [class]="
+              attempt.card.type.id === gameCard().type.id
+                ? 'bg-success/20 border-success/40'
+                : 'bg-error/20 border-error/40'
+            "
+          >
+            <span class="relative z-10"> {{ attempt.card.type.name }} </span>
+          </div>
+          <div
+            class="border rounded-lg flex flex-col items-center justify-center p-3 font-bold h-full"
+            [class]="
+              getSubtypeState(attempt.card.subtypes, gameCard().subtypes) === 'success'
+                ? 'bg-success/20 border-success/40'
+                : getSubtypeState(attempt.card.subtypes, gameCard().subtypes) === 'warning'
+                  ? 'bg-warning/20 border-warning/40'
+                  : 'bg-error/20 border-error/40'
+            "
+          >
+            @for (subtype of attempt.card.subtypes; track $index) {
+              <span class="relative z-10"> {{ subtype.name }} </span>
+            }
+            @if (attempt.card.subtypes.length === 0) {
+              <span class="relative z-10"> None </span>
+            }
+          </div>
+          <div
+            class="border rounded-lg flex flex-col items-center justify-center p-3 font-bold h-full"
+            [class]="
+              getKeywordState(attempt.card.keywords, gameCard().keywords) === 'success'
+                ? 'bg-success/20 border-success/40'
+                : getKeywordState(attempt.card.keywords, gameCard().keywords) === 'warning'
+                  ? 'bg-warning/20 border-warning/40'
+                  : 'bg-error/20 border-error/40'
+            "
+          >
+            @for (keyword of attempt.card.keywords; track $index) {
+              <span class="relative z-10"> {{ keyword.name }} </span>
+            }
+            @if (attempt.card.keywords.length === 0) {
+              <span class="relative z-10"> None </span>
+            }
+          </div>
+          <div
+            class="border rounded-lg flex flex-col items-center justify-center p-3 font-bold relative overflow-hidden h-full"
+            [class]="
+              attempt.card.set.id === gameCard().set.id
+                ? 'bg-success/20 border-success/40'
+                : 'bg-error/20 border-error/40'
+            "
+          >
+            <span class="relative z-10"> {{ attempt.card.set.name }} </span>
+
+            @if (getSetArrow(attempt.card.set, gameCard().set)) {
+              <span
+                class="material-symbols-rounded absolute -bottom-1 -right-1 transform rotate-12 text-error/20"
+                style="font-size: 3.25rem"
+              >
+                {{ getSetArrow(attempt.card.set, gameCard().set) }}
+              </span>
+            }
+          </div>
+        </div>
+      }
+      @if (attempts().length < maxAttempts) {
+        <div class="grid grid-cols-8 gap-2 md:gap-3 items-start text-sm">
+          @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+            <div
+              class="bg-base-300/60 border border-base-200 border-dashed rounded-lg flex items-center justify-center p-3 font-bold min-h-16"
+            >
+              ?
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<dialog id="imageModal" class="modal">
+  <div class="modal-box flex flex-col items-center">
+    <button
+      class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+      onclick="imageModal.close()"
+    >
+      ✕
+    </button>
+    <img [src]="modalImageUrl()" alt="Card" class="max-w-xs max-h-96" />
+  </div>
+</dialog>

@@ -1,0 +1,33 @@
+<div class="navbar bg-base-100 border-b border-primary/20">
+  <div class="flex flex-1 items-center gap-2">
+    <details class="dropdown">
+      <summary class="btn btn-lg btn-soft btn-primary px-2">
+        <span class="material-symbols-rounded select-none" style="font-size: 1.75rem">
+          playing_cards
+        </span>
+        CCGDLE
+      </summary>
+      <ul class="menu bg-base-200 rounded-b-lg w-full mt-0 absolute z-50 shadow-lg">
+        @for (gameMode of gameModes(); track gameMode.id) {
+          <li>
+            <a [routerLink]="['/game', gameMode.slug, date]">{{ gameMode.name }}</a>
+          </li>
+        }
+      </ul>
+    </details>
+  </div>
+  <div class="flex flex-none gap-1 sm:gap-2">
+    <button class="btn btn-soft btn-primary py-4.5 px-1.5 sm:px-2 btn-xs sm:btn-md">
+      <span class="material-symbols-rounded select-none" style="font-size: 1.5rem">
+        bar_chart
+      </span>
+    </button>
+
+    <button class="btn btn-soft btn-primary py-4.5 px-1.5 sm:px-2 btn-xs sm:btn-md">
+      <span class="material-symbols-rounded select-none" style="font-size: 1.5rem"> help </span>
+    </button>
+    <button class="btn btn-soft btn-primary py-4.5 px-1.5 sm:px-2 btn-xs sm:btn-md">
+      <span class="material-symbols-rounded select-none" style="font-size: 1.5rem"> settings </span>
+    </button>
+  </div>
+</div>
