@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: ccgdle-postgres-dev
+    restart: always
+    environment:
+      POSTGRES_USER: ccgdle_user
+      POSTGRES_PASSWORD: ccgdle_password
+      POSTGRES_DB: ccgdle_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ccgdle_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  ccgdle_postgres_data:

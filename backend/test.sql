@@ -1,0 +1,1 @@
+UPDATE cards SET mana_cost = 10 WHERE id = 107923;
